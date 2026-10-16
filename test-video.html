@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Test</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #001233;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    .video-test {
+      margin-bottom: 30px;
+      border: 2px solid #7de6fd;
+      padding: 10px;
+    }
+    video {
+      width: 100%;
+      max-width: 800px;
+      display: block;
+      margin: 10px 0;
+    }
+    h2 {
+      color: #7de6fd;
+    }
+  </style>
+</head>
+<body>
+  <h1>Video Assets Test - Kaider Persona Portfolio</h1>
+  
+  <div class="video-test">
+    <h2>1. Background Intro Video</h2>
+    <video controls muted autoplay>
+      <source src="assets/bg-intro.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <div class="video-test">
+    <h2>2. Background Loop Video</h2>
+    <video controls muted loop autoplay>
+      <source src="assets/bg-loop.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <div class="video-test">
+    <h2>3. Skills Background Video</h2>
+    <video controls muted loop>
+      <source src="assets/skills-bg.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <div class="video-test">
+    <h2>4. Makoto Wallpaper Video (Character Animation)</h2>
+    <video controls muted loop>
+      <source src="assets/makoto-wallpaper.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <div class="video-test">
+    <h2>5. About Background Video</h2>
+    <video controls muted loop>
+      <source src="assets/about-bg.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <div class="video-test">
+    <h2>6. Contact Background Video</h2>
+    <video controls muted loop>
+      <source src="assets/contact-bg.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <script>
+    // Check if all videos loaded successfully
+    const videos = document.querySelectorAll('video');
+    videos.forEach((video, index) => {
+      video.addEventListener('loadeddata', () => {
+        console.log(`Video ${index + 1} loaded successfully`);
+      });
+      video.addEventListener('error', (e) => {
+        console.error(`Video ${index + 1} failed to load:`, e);
+      });
+    });
+  </script>
+</body>
+</html>
