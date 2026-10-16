@@ -2186,6 +2186,36 @@ body.about-screen-active .character-viewport {
   gap: 1.5rem;
   margin-top: 2rem;
   max-width: 900px;
+  max-height: calc(100vh - 250px); /* Leave space for header and controls */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 1rem; /* Space for scrollbar */
+  padding-bottom: 2rem; /* Extra space at bottom */
+  scroll-behavior: smooth; /* Smooth scrolling */
+  
+  /* Custom scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(125, 230, 253, 0.3) rgba(5, 30, 70, 0.2);
+}
+
+/* Webkit scrollbar styling */
+.p3r-experience-timeline::-webkit-scrollbar {
+  width: 8px;
+}
+
+.p3r-experience-timeline::-webkit-scrollbar-track {
+  background: rgba(5, 30, 70, 0.2);
+  border-radius: 4px;
+}
+
+.p3r-experience-timeline::-webkit-scrollbar-thumb {
+  background: rgba(125, 230, 253, 0.3);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.p3r-experience-timeline::-webkit-scrollbar-thumb:hover {
+  background: rgba(125, 230, 253, 0.5);
 }
 
 .p3r-exp-card {
@@ -2197,6 +2227,8 @@ body.about-screen-active .character-viewport {
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  flex-shrink: 0; /* Prevent cards from shrinking */
+  min-height: 180px; /* Ensure cards maintain readable size */
 }
 
 .p3r-exp-card::before {
@@ -2545,11 +2577,19 @@ body.about-screen-active .character-viewport {
   .p3r-experience-timeline {
     gap: 1rem;
     margin-top: 1rem;
+    max-height: calc(100vh - 180px); /* Adjust for mobile header/controls */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 0.5rem;
+    padding-bottom: 3rem; /* Extra space for thumb scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth momentum scrolling on iOS */
+    scroll-behavior: smooth;
   }
 
   .p3r-exp-card {
     padding: 1rem;
-    min-height: 44px; /* Touch-friendly */
+    min-height: 160px; /* Keep cards readable, don't shrink */
+    flex-shrink: 0; /* Prevent shrinking */
   }
 
   .p3r-exp-header {
@@ -2778,6 +2818,16 @@ body.about-screen-active .character-viewport {
 
   .p3r-experience-timeline {
     gap: 0.8rem;
+    max-height: calc(100vh - 150px);
+    padding-bottom: 2rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .p3r-exp-card {
+    padding: 0.8rem;
+    min-height: 140px; /* Keep readable on landscape */
+    flex-shrink: 0;
   }
 
   .p3r-exp-card {
