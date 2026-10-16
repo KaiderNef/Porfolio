@@ -96,6 +96,56 @@ const options = [
   }
 ];
 
+// EXPERIENCE page data: detailed work history with achievements and outcomes
+const experienceData = [
+  {
+    id: "acecook",
+    company: "ACECOOK VIETNAM",
+    period: "Oct 2025 - Present",
+    role: "Data Analyst, CMI Department",
+    tag: "CURRENT POSITION",
+    summary: "Market research, BI automation, and cross-functional data systems",
+    details: [
+      { title: "Core Focus", desc: "Market research operations, BI automation, and cross-functional data infrastructure for Marketing and Sales teams." },
+      { title: "Key Projects", desc: "Built CMI-Hub (research booking & project tracking platform), automated Nielsen Retail Audit dashboard (20+ users), Sale-in reporting ETL pipeline (saved ~10 hours/month), and SAP-to-Marketing daily data sync." },
+      { title: "Research Leadership", desc: "Leading Economy Noodle category repositioning strategy for Mì Quen, synthesizing FGD, quantitative and CLT research into actionable insight." },
+      { title: "Impact", desc: "Delivered 15+ DIY consumer studies, automated recurring workflows, and established data infrastructure used daily by 30+ stakeholders across departments." },
+      { title: "Recognition", desc: "Golden Suggestion Award (2025) for process automation and innovation contributions." }
+    ],
+    tags: ["Python", "Power BI", "ETL", "Market Research", "Nielsen Audit", "SAP", "Vercel", "Supabase"]
+  },
+  {
+    id: "avery",
+    company: "AVERY DENNISON",
+    period: "Feb 2025 - Oct 2025",
+    role: "Data Analyst (Production Planner)",
+    tag: "MANUFACTURING OPERATIONS",
+    summary: "Production planning and data analysis for manufacturing operations",
+    details: [
+      { title: "Responsibility", desc: "Production planning, demand forecasting, and capacity analysis for label manufacturing operations." },
+      { title: "Core Work", desc: "Optimized production schedules, managed inventory levels, and coordinated cross-functional teams for on-time delivery." },
+      { title: "Data Analysis", desc: "Built Excel-based planning models and reporting dashboards to track KPIs, production efficiency, and material utilization." },
+      { title: "Skills Applied", desc: "Production scheduling, demand planning, inventory management, and stakeholder coordination in a fast-paced manufacturing environment." }
+    ],
+    tags: ["Production Planning", "Data Analysis", "Excel", "Demand Forecasting", "Inventory Management"]
+  },
+  {
+    id: "reputize",
+    company: "REPUTIZE ASIA",
+    period: "Feb 2024 - Feb 2025",
+    role: "Data Analyst",
+    tag: "DIGITAL ANALYTICS",
+    summary: "Data analysis and reporting for digital reputation management",
+    details: [
+      { title: "Focus Area", desc: "Data analysis and automated reporting for digital reputation management and social media monitoring campaigns." },
+      { title: "Core Deliverables", desc: "Created client dashboards, automated reporting workflows, and delivered data-driven insights for brand reputation tracking." },
+      { title: "Technical Work", desc: "Built reporting automation pipelines, cleaned and processed social media and web data, and designed visualization dashboards." },
+      { title: "Client Impact", desc: "Supported multiple client accounts with consistent, timely reporting and actionable insights for reputation strategy." }
+    ],
+    tags: ["Data Analysis", "Reporting", "Automation", "Dashboards", "Social Media Analytics"]
+  }
+];
+
 // PROJECT page cards. `details` open in the existing modal when confirmed (ENTER / click).
 // Display fonts (Rodin / Skip) have no Vietnamese diacritics, so card titles stay ASCII.
 const slinkData = [
@@ -618,8 +668,9 @@ function setIndex(index) {
   // Speculatively preload the selected subpage's video just in time
   if (index === 0 && slinkBgVideo && slinkBgVideo.preload !== "auto") slinkBgVideo.preload = "auto";
   else if (index === 1 && skillBgVideo && skillBgVideo.preload !== "auto") skillBgVideo.preload = "auto";
-  else if (index === 2 && aboutBgVideo && aboutBgVideo.preload !== "auto") aboutBgVideo.preload = "auto";
-  else if (index === 3 && contactBgVideo && contactBgVideo.preload !== "auto") contactBgVideo.preload = "auto";
+  else if (index === 2 && experienceBgVideo && experienceBgVideo.preload !== "auto") experienceBgVideo.preload = "auto";
+  else if (index === 3 && aboutBgVideo && aboutBgVideo.preload !== "auto") aboutBgVideo.preload = "auto";
+  else if (index === 4 && contactBgVideo && contactBgVideo.preload !== "auto") contactBgVideo.preload = "auto";
 
   for (let idx = 0; idx < cachedOptionItems.length; idx++) {
     const item = cachedOptionItems[idx];
@@ -1185,8 +1236,49 @@ function openExperiencePage(clickEvent) {
     pageEl: experiencePage,
     origin: getExperienceOptionCenter(clickEvent),
     bodyClass: "experience-screen-active",
-    videoEl: experienceBgVideo
+    videoEl: experienceBgVideo,
+    onStart: () => {
+      attachExperienceCardListeners();
+    }
   });
+}
+
+// Attach click handlers to experience cards
+function attachExperienceCardListeners() {
+  const expCards = document.querySelectorAll('.p3r-exp-card');
+  expCards.forEach((card, index) => {
+    // Remove existing listeners
+    const newCard = card.cloneNode(true);
+    card.parentNode.replaceChild(newCard, card);
+    
+    // Add hover effect
+    newCard.style.cursor = 'pointer';
+    
+    // Add click listener
+    newCard.addEventListener('click', () => {
+      if (!isModalOpen && experienceData[index]) {
+        openExperienceDetail(experienceData[index]);
+      }
+    });
+  });
+}
+
+// Open experience detail modal
+function openExperienceDetail(expData) {
+  if (isModalOpen) return;
+  
+  // Find the clicked card for origin point
+  const cards = document.querySelectorAll('.p3r-exp-card');
+  let origin = { x: window.innerWidth * 0.5, y: window.innerHeight * 0.5 };
+  
+  cards.forEach((card, idx) => {
+    if (experienceData[idx] && experienceData[idx].id === expData.id) {
+      const r = card.getBoundingClientRect();
+      origin = { x: r.left + r.width * 0.5, y: r.top + r.height * 0.5 };
+    }
+  });
+  
+  showModal(expData.tag, expData.company, expData.summary, expData.details, origin);
 }
 
 function closeExperiencePage() {

@@ -147,8 +147,16 @@ body.project-screen-active .side-number {
 }
 
 @media (max-width: 1023px) {
+  /* Show mobile warning initially - will be hidden by responsive CSS below */
   .mobile-warning {
     display: flex;
+  }
+  
+  /* But override and hide it for tablet sizes that can handle the site */
+  @supports (display: grid) {
+    .mobile-warning {
+      display: none !important;
+    }
   }
 }
 
@@ -2188,6 +2196,7 @@ body.about-screen-active .character-viewport {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .p3r-exp-card::before {
@@ -2302,6 +2311,12 @@ body.about-screen-active .character-viewport {
     display: none !important;
   }
 
+  /* Main container should be scrollable if needed */
+  .p3r-main {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
   /* Adjust menu column positioning */
   .menu-column {
     left: 20rem;
@@ -2352,6 +2367,12 @@ body.about-screen-active .character-viewport {
 
   .p3r-exp-desc {
     font-size: 0.85rem;
+  }
+
+  /* Make cards more touch-friendly on tablets */
+  .p3r-exp-card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
   }
 }
 
@@ -2528,6 +2549,7 @@ body.about-screen-active .character-viewport {
 
   .p3r-exp-card {
     padding: 1rem;
+    min-height: 44px; /* Touch-friendly */
   }
 
   .p3r-exp-header {
@@ -2538,6 +2560,7 @@ body.about-screen-active .character-viewport {
 
   .p3r-exp-company {
     font-size: 1rem;
+    line-height: 1.3;
   }
 
   .p3r-exp-period {
@@ -2547,6 +2570,7 @@ body.about-screen-active .character-viewport {
   .p3r-exp-role {
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
+    line-height: 1.3;
   }
 
   .p3r-exp-desc {
@@ -2555,9 +2579,19 @@ body.about-screen-active .character-viewport {
     margin-bottom: 0.75rem;
   }
 
+  .p3r-exp-desc p {
+    margin: 0;
+  }
+
   .p3r-exp-tag {
     font-size: 0.7rem;
     padding: 0.2rem 0.6rem;
+  }
+
+  .p3r-exp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
   }
 
   /* ABOUT Section Mobile */
@@ -2639,26 +2673,36 @@ body.about-screen-active .character-viewport {
     left: 1rem;
   }
 
-  /* Modal Mobile */
+  /* Modal Mobile - Better readability */
   .portfolio-modal {
     padding: 1rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
   }
 
   .modal-card {
     padding: 1.5rem 1rem;
     max-width: 95%;
+    margin: auto;
+    max-height: 85vh;
+    overflow-y: auto;
   }
 
   .modal-title {
     font-size: 1.5rem;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
   }
 
   .modal-tag {
     font-size: 0.7rem;
+    margin-bottom: 0.5rem;
   }
 
   .modal-summary {
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
+    line-height: 1.5;
+    margin-bottom: 1rem;
   }
 
   .modal-content-grid {
@@ -2668,14 +2712,17 @@ body.about-screen-active .character-viewport {
 
   .modal-info-card {
     padding: 1rem;
+    background: rgba(5, 30, 70, 0.4);
   }
 
   .info-card-title {
     font-size: 0.9rem;
+    margin-bottom: 0.5rem;
   }
 
   .info-card-desc {
     font-size: 0.8rem;
+    line-height: 1.5;
   }
 
   /* Video backgrounds - maintain aspect ratio */
@@ -2684,13 +2731,26 @@ body.about-screen-active .character-viewport {
     object-fit: cover;
   }
 
-  /* Touch-friendly tap targets */
+  /* Touch-friendly tap targets - increased size */
   .menu-option-container,
   .slink-card,
+  .p3r-exp-card,
   .control-item,
   button {
-    min-height: 44px;
+    min-height: 48px;
     cursor: pointer;
+    -webkit-tap-highlight-color: rgba(125, 230, 253, 0.2);
+  }
+
+  /* Ensure viewport doesn't overflow */
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  /* Prevent zoom on input focus (iOS Safari) */
+  input, textarea, select {
+    font-size: 16px !important;
   }
 }
 
@@ -2741,17 +2801,27 @@ body.about-screen-active .character-viewport {
 
   .p3r-exp-company {
     font-size: 0.9rem;
+    line-height: 1.3;
+    word-break: break-word;
   }
 
   .p3r-exp-role {
     font-size: 0.85rem;
+    line-height: 1.3;
   }
 
   .p3r-exp-desc {
     font-size: 0.75rem;
+    line-height: 1.4;
   }
 
   .modal-title {
     font-size: 1.2rem;
+    word-break: break-word;
+  }
+
+  .info-card-desc {
+    font-size: 0.75rem;
+    line-height: 1.4;
   }
 }
