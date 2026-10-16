@@ -40,12 +40,39 @@ const options = [
     cards: []
   },
   {
-    name: "ABOUT",
-    description: "Profile & Experience",
+    name: "EXPERIENCE",
+    description: "Work History & Timeline",
     rotation: -4,
     zIndex: 3,
     offsetX: -80,
     offsetY: 35,
+    fontSize: "4.35rem",
+    bannerScaleX: 1.0,
+    bannerScaleY: 3.15,
+    tag: "PROFESSIONAL EXPERIENCE",
+    summary: "Career progression in data analytics and business intelligence",
+    cards: [
+      {
+        title: "Acecook Vietnam",
+        desc: "Data Analyst, CMI Department | Oct 2024 - Present | Market research, BI automation, and cross-functional data systems"
+      },
+      {
+        title: "Avery Dennison",
+        desc: "Data Analyst (Production Planner) | Feb 2024 - Oct 2024 | Production planning and data analysis"
+      },
+      {
+        title: "Reputize Asia",
+        desc: "Data Analyst | Feb 2023 - Feb 2024 | Data analysis and reporting"
+      }
+    ]
+  },
+  {
+    name: "ABOUT",
+    description: "Profile & Background",
+    rotation: 2,
+    zIndex: 4,
+    offsetX: -85,
+    offsetY: 40,
     fontSize: "4.85rem",
     bannerScaleX: 1.02,
     bannerScaleY: 3.25,
@@ -56,10 +83,10 @@ const options = [
   {
     name: "CONTACT",
     description: "Initiate Communication",
-    rotation: 5,
-    zIndex: 4,
-    offsetX: -85,
-    offsetY: 40,
+    rotation: 10,
+    zIndex: 5,
+    offsetX: -90,
+    offsetY: 45,
     fontSize: "4.65rem",
     bannerScaleX: 1.04,
     bannerScaleY: 3.2,
@@ -245,6 +272,11 @@ const p3rSkillsContainer = document.getElementById("p3r-skills-container");
 const skillBackBtn = document.getElementById("skill-back-btn");
 const skillTabPrevBtn = document.getElementById("skill-tab-prev-btn");
 const skillTabNextBtn = document.getElementById("skill-tab-next-btn");
+
+// DOM Elements: Experience Screen
+const experiencePage = document.getElementById("experience-page");
+const experienceBgVideo = document.getElementById("experience-bg-video");
+const experienceBackBtn = document.getElementById("experience-back-btn");
 
 // DOM Elements: About Screen
 const aboutPage = document.getElementById("about-page");
@@ -1116,6 +1148,59 @@ function openAboutPage(clickEvent) {
   });
 }
 
+// --------------------------------------------------------------------------
+// Experience Page Open & Close
+// --------------------------------------------------------------------------
+let isExperiencePageOpen = false;
+
+function getExperienceOptionCenter(clickEvent) {
+  if (clickEvent && clickEvent.currentTarget) {
+    const rect = clickEvent.currentTarget.getBoundingClientRect();
+    return { x: rect.left + rect.width * 0.5, y: rect.top + rect.height * 0.5 };
+  }
+  const optionEl = document.querySelector('[data-option-index="2"]');
+  if (optionEl) {
+    const r = optionEl.getBoundingClientRect();
+    return { x: r.left + r.width * 0.5, y: r.top + r.height * 0.5 };
+  }
+  return { x: window.innerWidth * 0.35, y: window.innerHeight * 0.5 };
+}
+
+function getExperienceExitOrigin() {
+  if (experienceBackBtn) {
+    const r = experienceBackBtn.getBoundingClientRect();
+    if (r.width > 0 && r.height > 0) {
+      return { x: r.left + r.width * 0.5, y: r.top + r.height * 0.5 };
+    }
+  }
+  return { x: window.innerWidth * 0.1, y: window.innerHeight * 0.92 };
+}
+
+function openExperiencePage(clickEvent) {
+  if (isExperiencePageOpen || isWavyTransitionRunning) return;
+  isExperiencePageOpen = true;
+  playSFX();
+
+  executeWavyReveal({
+    pageEl: experiencePage,
+    origin: getExperienceOptionCenter(clickEvent),
+    bodyClass: "experience-screen-active",
+    videoEl: experienceBgVideo
+  });
+}
+
+function closeExperiencePage() {
+  if (!isExperiencePageOpen || isWavyTransitionRunning) return;
+  isExperiencePageOpen = false;
+
+  executeWavyClose({
+    pageEl: experiencePage,
+    exitOrigin: getExperienceExitOrigin(),
+    bodyClass: "experience-screen-active",
+    videoEl: experienceBgVideo
+  });
+}
+
 function closeAboutPage() {
   if (!isAboutPageOpen || isWavyTransitionRunning) return;
   isAboutPageOpen = false;
@@ -1271,15 +1356,17 @@ function closeModal() {
   };
 }
 
-// Option Confirmation Dispatcher (Strictly 4 Options: PROJECT, SKILLS, ABOUT, CONTACT)
+// Option Confirmation Dispatcher (5 Options: PROJECT, SKILLS, EXPERIENCE, ABOUT, CONTACT)
 function handleOptionConfirm(index, clickEvent) {
   if (index === 0) {
     openProjectPage(clickEvent);
   } else if (index === 1) {
     openSkillPage(clickEvent);
   } else if (index === 2) {
-    openAboutPage(clickEvent);
+    openExperiencePage(clickEvent);
   } else if (index === 3) {
+    openAboutPage(clickEvent);
+  } else if (index === 4) {
     openContactPage(clickEvent);
   }
 }
@@ -1462,6 +1549,7 @@ if (slinkBackBtn) slinkBackBtn.addEventListener("click", closeProjectPage);
 if (skillBackBtn) skillBackBtn.addEventListener("click", closeSkillPage);
 if (skillTabPrevBtn) skillTabPrevBtn.addEventListener("click", prevSkillTab);
 if (skillTabNextBtn) skillTabNextBtn.addEventListener("click", nextSkillTab);
+if (experienceBackBtn) experienceBackBtn.addEventListener("click", closeExperiencePage);
 if (aboutBackBtn) aboutBackBtn.addEventListener("click", closeAboutPage);
 if (contactBackBtn) contactBackBtn.addEventListener("click", closeContactPage);
 
@@ -1520,6 +1608,15 @@ document.addEventListener("keydown", (e) => {
     } else if (e.key.toLowerCase() === "e" || e.key === "ArrowRight") {
       e.preventDefault();
       nextSkillTab();
+    }
+    return;
+  }
+
+  // Active Screen: Experience
+  if (isExperiencePageOpen) {
+    if (e.key === "Escape" || e.key.toLowerCase() === "b" || e.key.toLowerCase() === "backspace") {
+      e.preventDefault();
+      closeExperiencePage();
     }
     return;
   }
